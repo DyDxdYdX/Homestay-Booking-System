@@ -1,0 +1,23 @@
+Homestay Booking System
+
+User:
+Home Owner
+Customer
+Admin
+
+Modules
+
+-authentication [all user] (Dexter) done
+-user profile [all user] (nazmi) done
+-order home listing [customer] (caasi) done
+-add home listing [home owner] (nazmi) done
+-payment [customer] (Ead)
+-feedback [customer] (isyah) done
+-news [admin] (isyah) done
+-Search and Filter [customer] (Ead)
+-Booking Management [customer & home owner] done
+-Reporting and Analytics [admin] (Dexter) done
+-Check-In/Check-Out [customer] done
+-User Management [admin] (caasi) done
+
+https://docs.google.com/spreadsheets/d/1Z-bsbZWdIiXCUnQkWRCbPjGwv4SrHJMWYAcaOLPaGOs/edit?amp;usp=embed_facebook#gid=0

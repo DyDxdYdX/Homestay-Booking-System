@@ -1,0 +1,287 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+body, html {
+    height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+h2 {
+    text-align: left;
+    margin-left: 20px;
+}
+
+footer{
+    text-align: center;
+}
+
+/* banner and text */
+.bg-image {
+    /* The image used */
+    background-image: url("../img/mountkinabalu-full.jpg");
+  
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  
+    /* Full height */
+    height: 50%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+.bg-text {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+/* nav */
+.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+}
+
+.nav a{
+    float: left;
+    display: block;
+    color: #666;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.nav a:hover{
+    background-color: #ddd;
+}
+
+.nav a.active{
+    color: white;
+    background-color: #0053a1;
+}
+
+/* row */
+.row {
+	display: flex;
+	flex-wrap: wrap; 
+    margin-left: 20px;
+}
+
+.col-left {
+	flex: 20%;
+	padding: 15px;
+    text-align: center;
+}
+.col-right {
+	flex: 70%;
+	padding: 15px 20px 15px 15px; 
+}
+
+.col-right table td {
+    padding: 15px;
+	height: 30px;
+}
+
+/*===========================================
+  Images
+===========================================*/
+.imgcontainer {
+	text-align: center;
+}
+.avatar {
+	border-radius: 50%;
+	overflow: hidden;
+	width: 300px;
+	height: 300px;
+	margin-top: 20px;
+	margin-bottom: 24px;
+}
+.image {
+    width: auto;
+	height: 300px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/*===========================================
+  Container (login page)
+===========================================*/
+.container {
+	max-width: 300px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	margin: auto;
+}
+.container button{
+	background-color: #04AA6D;
+	color: white;	
+	padding: 13px 115px;
+	width: 300px;
+	border: none; 
+}
+.container input[type="text"],
+.container input[type="password"]{
+	text-align: left;
+	padding: 13px 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 276px;
+}
+.background-container {
+    background-color: #f2f2f2; 
+    height: 45px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* form 1 */
+#form{
+    display: none;
+}
+
+#form table{	
+	border-collapse: collapse;
+	width: 50%;
+	padding-left: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#form input[type="submit"], 
+	input[type="reset"], input[type="button"]{
+	padding: 15px 32px;
+	cursor: pointer;
+}
+
+#form select{
+	padding: 5px;
+}
+
+#form input[type="text"]{
+	padding: 5px;
+}	
+
+#form textarea{
+	width:95%;
+	padding: 5px;
+}
+
+#form td, #form th {
+	border: 1px solid #616161;
+	padding: 8px;
+}
+
+/* form 2 */
+#form2{
+    display: block;
+}
+
+#form2 table{	
+	border-collapse: collapse;
+	width: 100%;
+	padding-left: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#form2 input[type="submit"], 
+	input[type="reset"], input[type="button"]{
+	padding: 15px 32px;
+	cursor: pointer;
+}
+
+#form2 select{
+	padding: 5px;
+}
+
+#form2 input[type="text"]{
+	padding: 5px;
+}	
+
+#form2 textarea{
+	width:95%;
+	padding: 5px;
+}
+
+#form2 td, #form th {
+	border: 1px solid #616161;
+	padding: 8px;
+}
+
+/*===========================================
+  User Register (login page)
+===========================================*/
+#registerDiv input, #registerDiv select, #registerDiv textarea{
+	text-align: left;
+	padding: 8px 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 45%;
+}
+#registerDiv input[type=submit],#registerDiv input[type=reset]{
+	background-color: #f2f2f2;
+	color: black;	
+	padding: 15px;
+	border: none;
+	width: 10%; 
+}
+#registerDiv button{
+    width: 100px;
+    padding: 10px;
+}
+#matricNo{
+	text-align: left;
+}
+
+/*===========================================
+ Table
+===========================================*/
+#projectable {
+    border-collapse: collapse;
+    width: 100%;
+}
+#projectable th {
+    border: 1px solid #616161;
+    padding: 8px;
+}
+#projectable td {
+    border: 1px solid #616161;
+    padding: 8px;
+}
+#projectable tr:nth-child(even){background-color: #ddd;}
+#projectable tr:hover {background-color: #C8B4BA;}
+#projectable th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #216f76;
+	color: white;
+}
+#projectable td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    color: black;
+}
