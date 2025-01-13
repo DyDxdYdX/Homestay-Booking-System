@@ -1,17 +1,23 @@
 <?php
-include('config.php');
+include_once 'config.php';
 
 if (isset($_GET["id"]) && $_GET["id"] != "" && isset($_GET["action"])) {
     $id = intval($_GET["id"]); // Ensure $id is an integer
     $action = $_GET["action"];
 
     // Determine the status based on the action
-    $status = ($action === "block") ? "Blocked" : (($action === "activate") ? "Active" : null);
+    $status = null; // Default value
+    if ($action === "block") {
+        $status = "Blocked";
+    } elseif ($action === "activate") {
+        $status = "Active";
+    }
+
 
     if ($status) {
         // Update the record in the database
         $sql = "UPDATE user SET user_STATUS = '$status' WHERE userID = $id";
-        echo $sql . "<br>"; 
+        echo $sql . "<br>";
 
         if (mysqli_query($conn, $sql)) {
             echo "User is {$status} Successfully<br>";
@@ -28,4 +34,4 @@ if (isset($_GET["id"]) && $_GET["id"] != "" && isset($_GET["action"])) {
 }
 
 mysqli_close($conn);
-?>
+
