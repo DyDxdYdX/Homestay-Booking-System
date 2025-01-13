@@ -1,18 +1,18 @@
 <?php
-namespace App;
-
-use App\Menus\{AdminMenu, CustomerMenu, HomeownerMenu};
 
 function getMenu($usertype) {
     switch ($usertype) {
-        case "1": // Admin
-            $menu = new AdminMenu();
+        case "1":
+            include_once 'logged_menu_admin.php';
+        
             break;
-        case "2": // Homeowner
-            $menu = new HomeownerMenu();
+        case "2":
+            include_once 'logged_menu_homeowner.php';
+        
             break;
-        default: // Customer
-            $menu = new CustomerMenu();
+        default:
+            include_once 'logged_menu_customer.php';
+       
             break;
     }
 
