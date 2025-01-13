@@ -1,16 +1,18 @@
 <?php
+namespace App;
+
+use App\Menus\{renderAdminMenu, renderHomeownerMenu, renderCustomerMenu};
 
 function getMenu($usertype) {
     switch ($usertype) {
         case "1":
-            include_once 'logged_menu_admin.php';
+            renderAdminMenu();
             break;
         case "2":
-            include_once 'logged_menu_homeowner.php';
+            renderHomeownerMenu();
             break;
         default:
-            include_once 'logged_menu_customer.php';
+            renderCustomerMenu();
             break;
     }
 }
-
