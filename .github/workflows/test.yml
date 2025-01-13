@@ -20,7 +20,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.1
-        extensions: mysqli, sqlite3  # Ensure SQLite3 is installed for testing
+        extensions: mysqli, sqlite3
 
     - name: Generate Composer File (If Missing)
       run: |
@@ -31,14 +31,5 @@ jobs:
     - name: Install Dependencies
       run: composer install --no-scripts --no-progress
 
-    - name: Debug Environment Variables
-      run: |
-        echo "PHP Version:"
-        php -v
-        echo "Composer Version:"
-        composer --version
-        echo "Installed Extensions:"
-        php -m
-
     - name: Run PHPUnit Tests
-      run: vendor/bin/phpunit --testdox
+      run: vendor/bin/phpunit tests/ --testdox
