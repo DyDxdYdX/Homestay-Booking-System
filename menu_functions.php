@@ -1,18 +1,21 @@
 <?php
 namespace App;
 
-use App\Menus\{renderAdminMenu, renderHomeownerMenu, renderCustomerMenu};
+use App\Menus\{AdminMenu, CustomerMenu, HomeownerMenu};
 
 function getMenu($usertype) {
     switch ($usertype) {
-        case "1":
-            renderAdminMenu();
+        case "1": // Admin
+            $menu = new AdminMenu();
             break;
-        case "2":
-            renderHomeownerMenu();
+        case "2": // Homeowner
+            $menu = new HomeownerMenu();
             break;
-        default:
-            renderCustomerMenu();
+        default: // Customer
+            $menu = new CustomerMenu();
             break;
     }
+
+    $menu->render();
 }
+?>
