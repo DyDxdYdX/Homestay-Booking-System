@@ -19,7 +19,7 @@ include("config.php");
 
     <?php
         if (isset($_SESSION["UID"])) {
-            require 'menu_functions.php';
+            require_once 'menu_functions.php';
             getMenu($_SESSION["usertype"]);
         } else {
             include 'menu.php';
