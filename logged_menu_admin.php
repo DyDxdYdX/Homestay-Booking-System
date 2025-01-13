@@ -1,29 +1,45 @@
-<?php
-namespace App\Menus;
+<?PHP
+session_start();
+include('config.php');
 
-class AdminMenu {
-    private $currentPage;
+//variables
+$action="";
+$id="";
+$news = "";
+$remark = "";
 
-    public function __construct() {
-        $this->currentPage = basename($_SERVER['PHP_SELF']);
-    }
 
-    private function isProfilePage(): bool {
-        return in_array($this->currentPage, ['profile.php', 'profile_edit.php']);
-    }
 
-    private function isNewsPage(): bool {
-        return in_array($this->currentPage, ['news.php', 'news_edit.php']);
-    }
+//this block is called when button Submit is clicked
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //values for add or edit
+    $news = $_POST["news"];
+    $remark = $_POST["remark"];
+    
+    $sql = "INSERT INTO news (userID, news, remark)
+    VALUES (" . $_SESSION["UID"] . ", '" . $news . "','" . $remark . "')";
+    $status = insertTo_DBTable($conn, $sql);
 
-    public function render() {
-        echo '<div class="nav" id="myTopnav">
-            <a href="index.php" class="' . ($this->currentPage === 'index.php' ? 'active' : '') . '"><i class="fa fa-fw fa-home"></i> Home</a>
-            <a href="profile.php" class="' . ($this->isProfilePage() ? 'active' : '') . '"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
-            <a href="report.php" class="' . ($this->currentPage === 'report.php' ? 'active' : '') . '"><i class="fa fa-book" aria-hidden="true"></i> Report</a>
-            <a href="user_manage.php" class="' . ($this->currentPage === 'user_manage.php' ? 'active' : '') . '"><i class="fa fa-pencil-square" aria-hidden="true"></i> Manage User</a>
-            <a href="news.php" class="' . ($this->isNewsPage() ? 'active' : '') . '"><i class="fa fa-pencil-square" aria-hidden="true"></i> News</a>
-            <a href="logout.php" onClick="return confirm(\'Logout?\');"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
-        </div>';
+    if ($status) {
+       echo "Form data saved successfully!<br>";
+       echo '<a href="news.php">Back</a>';             
+    } else {
+        echo '<a href="news.php">Back</a>';
+   }  
+
+}
+
+//close db connection
+mysqli_close($conn);
+
+//Function to insert data to database table
+function insertTo_DBTable($conn, $sql){
+    if (mysqli_query($conn, $sql)) {
+        return true;
+    } else {
+        echo "Error: " . $sql . " : " . mysqli_error($conn) . "<br>";
+        return false;
     }
 }
+?>
+
