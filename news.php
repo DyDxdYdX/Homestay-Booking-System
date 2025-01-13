@@ -18,16 +18,10 @@ include("config.php");
     </div>
 
 <?php
-        if(isset($_SESSION["UID"])){
-            if($_SESSION["usertype"] == "1"){
-                include 'logged_menu_admin.php';
-            }else if($_SESSION["usertype"] == "2"){
-                include 'logged_menu_homeowner.php';
-            }else{
-                include 'logged_menu_customer.php';
-            }
-        }
-        else{
+        if (isset($_SESSION["UID"])) {
+            require 'menu_functions.php';
+            getMenu($_SESSION["usertype"]);
+        } else {
             include 'menu.php';
         }
     ?>
