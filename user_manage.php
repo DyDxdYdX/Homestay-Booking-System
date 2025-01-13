@@ -15,9 +15,11 @@ include("config.php");
 </head>
 
 <body>
-    <div class="header"></div>
+    <div class="bg-image"></div>
 
-    <h1>Homestay Booking System</h1>
+    <div class="bg-text">
+        <h1>Homestay Booking System</h1>
+    </div>
 
     <?php
     if (isset($_SESSION["UID"])) {
