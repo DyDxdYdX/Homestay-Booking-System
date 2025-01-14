@@ -2,7 +2,8 @@
 // Custom Testing Script for user_manage.php
 
 // Include the necessary configuration
-include("config.php");
+require_once(__DIR__ . '/../config.php');
+require_once(__DIR__ . '/../user_manage.php');
 
 // Function to mock database operations
 function mockDatabaseInsert($conn, $email, $password, $usertype, $status)
