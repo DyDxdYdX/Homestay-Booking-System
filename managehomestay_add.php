@@ -1,9 +1,9 @@
 <?php
 session_start();
-include_once("config.php");
-include_once("upload.php");
-include_once("db_operations.php");
-include_once("error_handler.php");
+include("config.php");
+include("upload.php");
+include("db_operations.php");
+include("error_handler.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hsname = $_POST["hsname"];
