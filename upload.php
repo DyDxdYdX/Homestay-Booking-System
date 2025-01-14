@@ -1,6 +1,6 @@
 <?php
 // upload.php - Handles file uploads
-function handle_file_upload($file, $target_dir = "uploads/") {
+function handle_file_upload($file, $target_dir = "uploads/") { //function to handle file upload
     $uploadOk = 1;
     $uploadfileName = $file["name"];
     $target_file = $target_dir . basename($uploadfileName);
