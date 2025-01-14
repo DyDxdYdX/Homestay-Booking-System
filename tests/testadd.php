@@ -4,8 +4,6 @@ use PHPUnit\Framework\TestCase;
 
 require_once(__DIR__ . '/../config.php');
 require_once(__DIR__ . '/../managehomestay_add.php');
-require_once(__DIR__ . '/../managehomestay_edit.php');
-require_once(__DIR__ . '/../managehomestay_delete.php');
 
 class ManageHomestayAddTest extends TestCase
 {
