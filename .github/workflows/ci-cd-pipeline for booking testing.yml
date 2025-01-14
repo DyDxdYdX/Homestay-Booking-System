@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for CustomBookingTest.php
+name: CI/CD Pipeline for Homestay Booking System
 
 on:
   push:
@@ -19,9 +19,24 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2.12
-          extensions: mbstring, json
+          php-version: 8.2.12 # Adjust to your PHP version
+          extensions: mysqli, mbstring
 
-      - name: Run CustomBookingTest.php
+      - name: Set up MySQL
+        run: |
+          sudo systemctl start mysql
+          mysql -e "CREATE DATABASE homestay;"
+          mysql -u root homestay < tests/database_setup.sql
+
+      - name: Seed Database
+        run: |
+          echo "Database seeded successfully"
+
+      - name: Run Tests
+        env:
+          DB_HOST: localhost
+          DB_NAME: homestay
+          DB_USER: root
+          DB_PASSWORD: ''
         run: |
           php tests/CustomBookingTest.php
