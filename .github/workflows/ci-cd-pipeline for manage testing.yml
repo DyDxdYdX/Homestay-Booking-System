@@ -1,0 +1,77 @@
+name: CI/CD Pipeline for Homestay Booking System Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout Code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1 # Adjust this if needed
+          extensions: mysqli, mbstring
+
+      # Step 3: Install MariaDB
+      - name: Install MariaDB
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mariadb-server
+          sudo service mysql start
+
+      # Step 4: Configure MariaDB User
+      - name: Configure MariaDB User
+        run: |
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('');"
+          sudo mysql -e "FLUSH PRIVILEGES;"
+          sudo mysql -e "CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'test_password';"
+          sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost' WITH GRANT OPTION;"
+          sudo mysql -e "FLUSH PRIVILEGES;"
+
+      # Step 5: Create Database and Import Schema
+      - name: Create Database
+        run: |
+          sudo mysql -u test_user -ptest_password -e "CREATE DATABASE homestay;"
+          sudo mysql -u test_user -ptest_password homestay < tests/database_setup.sql
+
+      # Step 6: Run testadd.php
+      - name: Run Add Tests
+        env:
+          DB_HOST: localhost
+          DB_NAME: homestay
+          DB_USER: test_user
+          DB_PASSWORD: test_password
+        run: |
+          php tests/testadd.php
+
+      # Step 7: Run testedit.php
+      - name: Run Edit Tests
+        env:
+          DB_HOST: localhost
+          DB_NAME: homestay
+          DB_USER: test_user
+          DB_PASSWORD: test_password
+        run: |
+          php tests/testedit.php
+
+      # Step 8: Run testdelete.php
+      - name: Run Delete Tests
+        env:
+          DB_HOST: localhost
+          DB_NAME: homestay
+          DB_USER: test_user
+          DB_PASSWORD: test_password
+        run: |
+          php tests/testdelete.php
