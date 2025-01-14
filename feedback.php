@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("config.php");
-include("helper.php");
+include_once("helper.php");
 ?>
 
 <!DOCTYPE html>
@@ -58,9 +58,8 @@ include("helper.php");
                         echo "<td>{$numrow}</td><td>{$row['hsname']}</td><td>{$row['dateIN']}</td>
                             <td>{$row['dateOUT']}</td><td>{$row['rating']}</td><td>{$row['fdback']}</td>";
                         echo '<td>
-                                <a href="feedback_edit.php?id=' . $row["fdbackID"] . '">Edit</a>&nbsp;|&nbsp;
-                                <a href="feedback_delete.php?id=' . $row["fdbackID"] . '" 
-                                onClick="return confirm(\'Delete?\');">Delete</a>
+                            <a href="feedback_edit.php?id=' . $row["fdbackID"] . '">Edit</a>&nbsp;|&nbsp;
+                                <a href="feedback_delete.php?id=' . $row["fdbackID"] . '"onClick="return confirm(\'Delete?\');">Delete</a>
                               </td>';
                         echo "</tr>";
                         $numrow++;
