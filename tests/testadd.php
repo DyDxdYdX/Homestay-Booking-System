@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../config.php');
-require_once(__DIR__ . '/../managehomestay_add_action.php'); // Assuming this contains the add functionality
+require_once(__DIR__ . '/../managehomestay_add.php'); // Assuming this contains the add functionality
 
 class TestHomestayAdd {
     private $conn;
