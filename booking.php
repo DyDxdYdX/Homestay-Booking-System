@@ -58,7 +58,7 @@ function renderHomeownerBookingTable($result) {
                     <td><?php echo htmlspecialchars($row["checkIN"]) . " | " . htmlspecialchars($row["checkOUT"]); ?></td>
                     <td><?php echo htmlspecialchars($row["payment_status"]); ?></td>
                     <td>
-                        <a href="booking_delete.php?id=<?php echo $row["bookingID"]; ?>" 
+                        <a href="booking_delete.php?id=<?php echo $row["bookingID"]; ?>"
                            onClick="return confirm('Cancel Booking?');">Cancel Booking</a>
                     </td>
                 </tr>
@@ -94,7 +94,7 @@ function renderCustomerBookingTable($result) {
                     <td><?php echo htmlspecialchars($row["username"]); ?></td>
                     <td><?php echo htmlspecialchars($row["book_date"]); ?></td>
                     <td>
-                        <a href="booking_delete.php?id=<?php echo $row["bookingID"]; ?>" 
+                        <a href="booking_delete.php?id=<?php echo $row["bookingID"]; ?>"
                            onClick="return confirm('Delete?');">Cancel Booking</a>
                     </td>
                 </tr>
