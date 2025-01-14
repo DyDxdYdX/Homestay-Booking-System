@@ -49,3 +49,4 @@ jobs:
           DB_PASSWORD: test_password
         run: |
           php tests/CustomBookingTest.php
+          php tests/CustomUserManagementTest.php
