@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("config.php");
+include("helper.php");
 ?>
 
 <!DOCTYPE html>
@@ -48,25 +49,26 @@ include("config.php");
                 <th width="10%">Action</th>
             </tr>
             <?php
-                $sql = "SELECT * FROM feedbacks WHERE userID=". $_SESSION["UID"];
-                $result = mysqli_query($conn, $sql);
-                
-                if (mysqli_num_rows($result) > 0) {
-                    // output data of each row
-                    $numrow=1;
-                    while($row = mysqli_fetch_assoc($result)) {
+            if (isset($_SESSION["UID"])) {
+                $feedbacks = fetchUserFeedbacks($conn, $_SESSION["UID"]);
+                if ($feedbacks->num_rows > 0) {
+                    $numrow = 1;
+                    while ($row = $feedbacks->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $numrow . "</td><td>". $row["hsname"] . "</td><td>" . $row["dateIN"] . "</td><td>" . $row["dateOUT"] . "</td><td>" 
-                        . $row["rating"] ."</td><td>" . $row["fdback"] . "</td>";
-                        echo '<td> <a href="feedback_edit.php?id=' . $row["fdbackID"] . '">Edit</a>&nbsp;|&nbsp;';
-                        echo '<a href="feedback_delete.php?id=' . $row["fdbackID"] . '" onClick="return confirm(\'Delete?\');">Delete</a> </td>';
-                        echo "</tr>" . "\n\t\t";
+                        echo "<td>{$numrow}</td><td>{$row['hsname']}</td><td>{$row['dateIN']}</td>
+                            <td>{$row['dateOUT']}</td><td>{$row['rating']}</td><td>{$row['fdback']}</td>";
+                        echo '<td>
+                                <a href="feedback_edit.php?id=' . $row["fdbackID"] . '">Edit</a>&nbsp;|&nbsp;
+                                <a href="feedback_delete.php?id=' . $row["fdbackID"] . '" 
+                                onClick="return confirm(\'Delete?\');">Delete</a>
+                              </td>';
+                        echo "</tr>";
                         $numrow++;
                     }
                 } else {
-                    echo '<tr><td colspan="7">0 results</td></tr>';
-                } 
-    
+                    echo '<tr><td colspan="7">No feedbacks available.</td></tr>';
+                }
+            }
             ?>
         </table>
     </div>
@@ -108,19 +110,16 @@ include("config.php");
                         <td id="tableform">
                             <select name="hsname">
                                 <?php
-                                if(isset($_SESSION['UID'])){
-                                    $sql = "SELECT * FROM homestaylist";
-                                    $result = mysqli_query($conn, $sql);
-                                    if(mysqli_num_rows($result) > 0){
-                                        $numrow=1;
-                                        while($row = mysqli_fetch_array($result)){
-                                            echo "<option value=".$row['hsname'].">".$row['hsname']."</option>";
-                                        }
-                                    }else{
-                                        echo "<option>No Available Option</option>";
-                                    }
+                            $homestays = fetchHomestays($conn);
+                            if ($homestays->num_rows > 0) {
+                                while ($row = $homestays->fetch_assoc()) {
+                                    $selected = ($row['hsname'] == $hsname) ? "selected" : "";
+                                    echo "<option value='{$row['hsname']}' {$selected}>{$row['hsname']}</option>";
                                 }
-                                ?>
+                            } else {
+                                echo "<option>No Available Option</option>";
+                            }
+                            ?>
                             </select>
                         </td>
                     </tr>
