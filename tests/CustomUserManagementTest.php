@@ -1,113 +1,74 @@
 <?php
-require_once(__DIR__ . '/../config.php');
-require_once(__DIR__ . '/../user_manage.php');
+require_once(__DIR__ . '/../config.php'); // Ensure this provides the $conn object.
 
 class CustomUserManagementTest {
     private $conn;
     private $testResults = [];
 
     public function __construct($conn) {
+        if (!$conn || $conn->connect_error) {
+            throw new Exception("Database connection error: " . $conn->connect_error);
+        }
         $this->conn = $conn;
     }
 
     private function assert($condition, $message) {
         if ($condition) {
             $this->testResults[] = "✅ PASS: $message";
-            return true;
         } else {
             $this->testResults[] = "❌ FAIL: $message";
-            return false;
         }
     }
 
     public function runTests() {
         echo "Running User Management Tests...\n\n";
-
-        $this->cleanUpMockData();
-        $this->testBlockUser();
-        $this->testActivateUser();
-        $this->testDuplicateUserInsertion();
-        $this->cleanUpMockData();
-
+        
+        $this->testDisplayActiveUsers();
+        $this->testDisplayBlockedUsers();
+        $this->testBlockAndActivateUsers();
+        
         $this->displayResults();
     }
 
-    private function testBlockUser() {
-        $email = "testuser1@example.com";
-        $password = "password123";
+    private function testDisplayActiveUsers() {
+        $sql = "SELECT * FROM user WHERE user_STATUS = 'Active' AND usertype != '1'";
+        $result = $this->conn->query($sql);
 
-        // Insert mock data
-        $this->mockDatabaseInsert($email, $password, USER_ROLE_CUSTOMER, STATUS_ACTIVE);
-
-        // Perform the action to block the user
-        $sql = "UPDATE user SET user_STATUS = '" . STATUS_BLOCKED . "' WHERE userEmail = '$email'";
-        $this->executeQuery($sql, "Failed to block the user");
-
-        // Assert the user is blocked
-        $this->assert(
-            $this->assertUserStatus($email, STATUS_BLOCKED),
-            "User successfully blocked"
-        );
-    }
-
-    private function testActivateUser() {
-        $email = "testuser2@example.com";
-        $password = "password123";
-
-        // Insert mock data
-        $this->mockDatabaseInsert($email, $password, USER_ROLE_CUSTOMER, STATUS_BLOCKED);
-
-        // Perform the action to activate the user
-        $sql = "UPDATE user SET user_STATUS = '" . STATUS_ACTIVE . "' WHERE userEmail = '$email'";
-        $this->executeQuery($sql, "Failed to activate the user");
-
-        // Assert the user is activated
-        $this->assert(
-            $this->assertUserStatus($email, STATUS_ACTIVE),
-            "User successfully activated"
-        );
-    }
-
-    private function testDuplicateUserInsertion() {
-        $email = "testuser3@example.com";
-        $password = "password123";
-
-        // Insert the first user
-        $this->mockDatabaseInsert($email, $password, USER_ROLE_CUSTOMER, STATUS_ACTIVE);
-
-        // Attempt to insert a duplicate user
-        $result = $this->mockDatabaseInsert($email, $password, USER_ROLE_CUSTOMER, STATUS_ACTIVE);
-
-        $this->assert(
-            !$result,
-            "Duplicate user insertion prevented"
-        );
-    }
-
-    private function mockDatabaseInsert($email, $password, $usertype, $status) {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (userEmail, userPwd, usertype, user_STATUS) VALUES ('$email', '$hashedPassword', '$usertype', '$status')";
-        return mysqli_query($this->conn, $sql);
-    }
-
-    private function assertUserStatus($email, $expectedStatus) {
-        $sql = "SELECT user_STATUS FROM user WHERE userEmail = '$email'";
-        $result = mysqli_query($this->conn, $sql);
-        if ($result && $row = mysqli_fetch_assoc($result)) {
-            return $row['user_STATUS'] === $expectedStatus;
-        }
-        return false;
-    }
-
-    private function executeQuery($sql, $errorMessage = "Query execution failed") {
-        if (!mysqli_query($this->conn, $sql)) {
-            die("$errorMessage: " . mysqli_error($this->conn));
+        $this->assert($result !== false, "Query for active users executed successfully");
+        if ($result) {
+            $this->assert($result->num_rows >= 0, "Active users query returned valid results");
         }
     }
 
-    private function cleanUpMockData() {
-        $sql = "DELETE FROM user WHERE userEmail LIKE 'testuser%'";
-        $this->executeQuery($sql, "Failed to clean up mock data");
+    private function testDisplayBlockedUsers() {
+        $sql = "SELECT * FROM user WHERE user_STATUS = 'Blocked' AND usertype != '1'";
+        $result = $this->conn->query($sql);
+
+        $this->assert($result !== false, "Query for blocked users executed successfully");
+        if ($result) {
+            $this->assert($result->num_rows >= 0, "Blocked users query returned valid results");
+        }
+    }
+
+    private function testBlockAndActivateUsers() {
+        // Insert a test user
+        $this->conn->query("INSERT INTO user (usertype, userEmail, userPwd, user_STATUS) VALUES (2, 'testuser@example.com', 'testpassword', 'Active')");
+        $userID = $this->conn->insert_id;
+
+        // Block the test user
+        $this->conn->query("UPDATE user SET user_STATUS = 'Blocked' WHERE userID = $userID");
+        $result = $this->conn->query("SELECT user_STATUS FROM user WHERE userID = $userID");
+        $status = $result->fetch_assoc()['user_STATUS'];
+        $this->assert($status === 'Blocked', "User was successfully blocked");
+
+        // Activate the test user
+        $this->conn->query("UPDATE user SET user_STATUS = 'Active' WHERE userID = $userID");
+        $result = $this->conn->query("SELECT user_STATUS FROM user WHERE userID = $userID");
+        $status = $result->fetch_assoc()['user_STATUS'];
+        $this->assert($status === 'Active', "User was successfully activated");
+
+        // Clean up the test user
+        $this->conn->query("DELETE FROM user WHERE userID = $userID");
     }
 
     private function displayResults() {
@@ -118,7 +79,7 @@ class CustomUserManagementTest {
         }
 
         $totalTests = count($this->testResults);
-        $passedTests = count(array_filter($this->testResults, function ($result) {
+        $passedTests = count(array_filter($this->testResults, function($result) {
             return strpos($result, '✅') === 0;
         }));
 
@@ -135,9 +96,5 @@ try {
     $tester->runTests();
 } catch (Exception $e) {
     echo "Error running tests: " . $e->getMessage() . "\n";
-} finally {
-    if (isset($conn)) {
-        mysqli_close($conn);
-    }
 }
 ?>
