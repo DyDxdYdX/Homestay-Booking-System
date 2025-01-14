@@ -1,5 +1,3 @@
-CREATE DATABASE homestay;
-
 CREATE TABLE user (
   userID INT NOT NULL AUTO_INCREMENT,
   usertype INT NOT NULL COMMENT '1 - Admin, 2 - Home Owner, 3 - Customer',
